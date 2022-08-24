@@ -563,8 +563,7 @@ class SparqlQuery(EntitiesSearch):
     def set_keys(self):
         reg = re.compile("SELECT.*?WHERE")
         k_ = reg.search(self.paramFormat.replace("\n", "").replace(" ", ""))
-        if k_ is None:
-            raise ValueError("Sparql Error")
+
         keys = k_.group().replace("SELECT", "").replace("WHERE", "")
         self.keys = keys[1::].split("?")
 

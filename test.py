@@ -10,9 +10,7 @@ from searchmanage_Wiki import SearchManage, Wikipedia, SparqlQuery, BingQuery, S
 
 if __name__ == "__main__":
     # Example data
-    p1 = [['SEU', 'Chain', 'English'], ['computer', 'games', 'computer game'], ['graph', 'wikipedia'],
-          ['SEU', 'Chain', 'English'], ['computer', 'games', 'computer game'], ['graph', 'wikipedia'],
-          ['SEU', 'Chain', 'English'], ['computer', 'games', 'computer game'], ['graph', 'wikipedia']]
+    p1 = ["SEU"]
     p2 = ["Q3918", "Q355304", "Q106589826", "Q3918", "Q355304", "Q106589826", "Q3918", "Q355304",
           "Q106589826", "Q3918", "Q355304", "Q106589826"]
 
@@ -51,17 +49,15 @@ if __name__ == "__main__":
 
     # DbpediaLookUp->"resource"
     db = DbpediaLookUp(m_num=10)
-    r7 = db.search_run(p1, patten='search', is_all=False, maxResults=20)
+    r7 = db.search_run(["china"], patten='search', is_all=False, maxResults=20)
     print(r7['resource'])
 
     # Dbpedia SPARQL
     end_point = "https://dbpedia.org/sparql"
-    sparql_ = """
-        SELECT?Type?Rtype
-        WHERE{
-        <%s> dbp:type ?Type;
-             rdf:type ?Rtype.}
-        """
+    sparql_="""
+    SELECT?a?b
+    WHERE {<%s> ?a ?b
+    FILTER (langMatches(lang(?b), "EN"))} LIMIT 100"""
     sql2 = SparqlQuery(m_num=200, format_='json', url_=end_point, sparql_=sparql_)
     r8 = sql2.search_run(r7['resource'], timeout=10000)
-    print(r8['Type'])
+    print(r8["b"])
